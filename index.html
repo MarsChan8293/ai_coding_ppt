@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>AI Coding 演讲编排器 · 超聚变</title>
+  <link rel="stylesheet" href="assets/html-ppt/base.css">
+  <link rel="stylesheet" href="assets/html-ppt/animations.css">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="slides/c-tools-layout.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#library" aria-label="超聚变 AI Coding 演讲编排器">
+        <img src="assets/media/xfusion-logo.svg" alt="超聚变">
+        <span class="brand-divider" aria-hidden="true"></span>
+        <span>AI Coding<br><em>演讲编排器</em></span>
+      </a>
+      <div class="topbar-center">
+        <span class="eyebrow">OFFLINE SLIDE LIBRARY</span>
+        <strong>自由组合 · 即时播放</strong>
+      </div>
+      <div class="topbar-actions">
+        <span class="offline-status"><i></i> 离线可用</span>
+        <button class="text-button" id="importButton" type="button">导入组合</button>
+        <input id="importInput" type="file" accept="application/json,.json" hidden>
+        <button class="icon-button" id="helpButton" type="button" aria-label="查看快捷键">?</button>
+      </div>
+    </header>
+
+    <main class="studio" id="library">
+      <section class="library-panel" aria-label="PPT 页面库">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">CONTENT LIBRARY · <span id="libraryTotal">7</span> PAGES · 6 SECTIONS</p>
+            <h1>选择这一次<span>真正要讲</span>的页面</h1>
+          </div>
+          <p class="intro">课程章节只是来源；这里的每张页面都可被独立组合、排序和复用。</p>
+        </div>
+
+        <nav class="section-tabs" id="sectionTabs" aria-label="内容板块"></nav>
+        <div class="library-bulk" aria-live="polite">
+          <p id="visibleSelectionStatus"></p>
+          <button class="bulk-button" id="addVisibleSlides" type="button">全选加入</button>
+        </div>
+        <div class="slide-grid" id="slideLibrary" aria-live="polite"></div>
+      </section>
+
+      <aside class="composition-panel" aria-label="当前演讲组合">
+        <div class="composition-head">
+          <div>
+            <p class="eyebrow">CURRENT COMPOSITION</p>
+            <label class="composition-name-label" for="compositionName">组合名称 · 可直接修改</label>
+            <input id="compositionName" class="composition-name" aria-label="组合名称" value="AI Coding 从零到落地">
+          </div>
+          <div class="composition-head-actions"><button class="new-button" id="duplicateComposition" type="button">复制</button><button class="new-button" id="newComposition" type="button">新建</button></div>
+        </div>
+
+        <div class="composition-meta">
+          <span id="selectionCount">0 张内容页</span>
+          <span class="meta-dot">·</span>
+          <span id="sectionCount">0 个板块</span>
+        </div>
+
+        <div class="selection-toolbar">
+          <span>已选页面</span>
+          <button class="clear-selection" id="clearSelectedSlides" type="button">全选清除</button>
+        </div>
+
+        <ol class="selection-list" id="selectionList" aria-label="已选择页面"></ol>
+
+        <div class="empty-selection" id="emptySelection" hidden>
+          <span>+</span>
+          <p>从左侧加入页面<br>开始编排一场演讲</p>
+        </div>
+
+        <div class="composition-actions">
+          <button class="secondary-button" id="saveComposition" type="button" aria-haspopup="dialog">命名并保存</button>
+          <button class="primary-button" id="playComposition" type="button">汇总并播放 <span>→</span></button>
+        </div>
+
+        <div class="preset-area">
+          <div class="preset-heading">
+            <span>已保存组合</span>
+            <button class="export-button" id="exportComposition" type="button">导出</button>
+          </div>
+          <div class="preset-list" id="presetList"></div>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <dialog class="help-dialog" id="helpDialog">
+    <div class="dialog-head"><span>播放快捷键</span><button class="icon-button close-dialog" type="button" aria-label="关闭">×</button></div>
+    <dl>
+      <div><dt>← / → / 空格</dt><dd>上一页 / 下一页</dd></div>
+      <div><dt>F</dt><dd>切换全屏</dd></div>
+      <div><dt>Esc</dt><dd>退出播放</dd></div>
+      <div><dt>↑ / ↓</dt><dd>在编排列表中调整焦点页</dd></div>
+    </dl>
+  </dialog>
+
+  <dialog class="save-dialog" id="saveDialog" aria-labelledby="saveDialogTitle">
+    <form id="saveCompositionForm">
+      <div class="dialog-head"><span class="eyebrow">SAVE COMPOSITION</span><button class="icon-button close-dialog" id="cancelSaveComposition" type="button" aria-label="取消保存">×</button></div>
+      <h2 id="saveDialogTitle">为这次播放组合命名</h2>
+      <p>名称会显示在“已保存组合”中，也会用于导出的文件名。</p>
+      <label for="saveCompositionName">组合名称</label>
+      <input id="saveCompositionName" name="saveCompositionName" type="text" maxlength="40" required autocomplete="off">
+      <div class="save-dialog-actions"><button class="secondary-button" id="cancelSaveCompositionText" type="button">取消</button><button class="primary-button" type="submit">保存组合</button></div>
+    </form>
+  </dialog>
+
+  <div class="player" id="player" aria-hidden="true">
+    <div class="player-toolbar">
+      <div class="player-brand"><img src="assets/media/xfusion-logo.svg" alt="超聚变"><span id="playerDeckName"></span></div>
+      <div class="player-actions"><span id="playerCounter"></span><button id="fullscreenButton" type="button">全屏</button><button id="closePlayer" type="button">退出 Esc</button></div>
+    </div>
+    <div class="deck-stage" id="deckStage" aria-live="polite"></div>
+    <div class="player-progress"><i id="playerProgress"></i></div>
+    <div class="player-hint">← → 切换　·　F 全屏　·　Esc 退出</div>
+  </div>
+
+  <template id="slideCardTemplate">
+    <article class="slide-card">
+      <div class="slide-thumb">
+        <iframe class="slide-preview" title="" tabindex="-1" loading="lazy" aria-hidden="true"></iframe>
+      </div>
+      <div class="card-content"><p class="card-kicker"></p><h2></h2></div>
+      <button class="add-slide" type="button"></button>
+    </article>
+  </template>
+
+  <script src="lesson-manifest.js"></script>
+  <script src="lesson-content.js"></script>
+  <script src="source-content.js"></script>
+  <script src="slides/b-history.js"></script>
+  <script src="slides/c-tools.js"></script>
+  <script src="slides/e-methods.js"></script>
+  <script src="slides/f-practice.js"></script>
+  <script src="slides/g-solution.js"></script>
+  <script src="slides/h-proof.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

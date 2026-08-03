@@ -1,0 +1,83 @@
+---
+title: "Skill：把一次有效协作变成能力"
+description: "理解 SKILL.md、渐进加载与作用域：Skill 不是一段更长的 Prompt，而是一套可复用、可审计的工作方法。"
+section: tools
+order: 7
+estimatedMinutes: 12
+prerequisites: ["理解 Agent 与 Subagent", "理解 MCP 的工具连接边界"]
+outcomes:
+  - "判断一段经验是否值得封装成 Skill"
+  - "理解 OpenCode 如何发现并按需加载 SKILL.md"
+  - "为团队 Skill 选择项目级或个人级作用域"
+tags: ["Agent Skills", "SKILL.md", "OpenCode"]
+reviewedAt: "2026-07-26"
+reviewedAgainst: ["Agent Skills 开放规范", "OpenCode Agent Skills 官方文档", "GitHub Agent Skills 官方文档"]
+draft: false
+---
+
+import Callout from "../../../components/Callout.astro";
+import Checklist from "../../../components/Checklist.astro";
+
+一个好 Prompt 的价值通常只活在一次对话里。Skill 的价值是把其中**稳定、可复查、可复用**的部分装进一个小目录：下一次由任何合适的 Agent 发现它、读取它，并按同一套边界做事。
+
+按 [Agent Skills 开放规范](https://github.com/agentskills/agentskills)，Skill 的根目录至少有一个 `SKILL.md`；也可以带上脚本、参考资料和模板。Agent 先只读取 `name` 与 `description`，任务匹配时才读取正文，真正需要时再使用目录里的资源。这叫“渐进加载”。
+
+```text
+github-pages-release-check/
+├── SKILL.md          # 必需：什么时候用、怎么做、何时停止
+├── scripts/          # 可选：需要确定性的重复操作
+├── references/       # 可选：按需读取的长文档、规范、错误对照
+└── assets/           # 可选：模板、图标、样例文件
+```
+
+## 什么内容值得做成 Skill
+
+<Callout type="tip" title="先别把所有知识都塞进 Skill">
+  每次都相关的短规则，放仓库指令；一次性的回答，留在对话；固定且不需要判断的操作，优先写成脚本。只有“会反复出现、包含判断与验证步骤”的任务，才值得做成 Skill。
+</Callout>
+
+适合封装的例子包括发布前检查、代码审查、故障诊断和固定格式的研究报告。一个 Skill 可以调用脚本，也可以使用 Agent 已有的工具，但它的核心仍是可复用的工作方法。
+
+## OpenCode 会在哪里找？
+
+本教程的主线工具 OpenCode 已原生支持 Agent Skills。项目内推荐放在：
+
+```bash
+mkdir -p .opencode/skills/github-pages-release-check
+```
+
+然后创建：
+
+```text
+.opencode/skills/github-pages-release-check/SKILL.md
+```
+
+OpenCode 也会识别项目内的 `.claude/skills/`、`.agents/skills/`，以及用户目录中的对应位置；它把可用 Skill 的名称和描述展示给 Agent，在需要时通过 `skill` 工具加载全文。路径、字段和权限会随工具版本演进，安装前以 [OpenCode Agent Skills 文档](https://opencode.ai/docs/skills/) 为准。
+
+## 作用域：先小后大
+
+| 作用域 | 位置 | 适合 | 风险 |
+| --- | --- | --- | --- |
+| 项目级 | `.opencode/skills/` | 发布检查、仓库测试、领域术语 | 会跟随仓库共享，应审查后提交 |
+| 个人级 | `~/.config/opencode/skills/` | 你的写作偏好、个人环境诊断 | 容易在不同项目误触发 |
+| 团队分发 | 受控模板仓库或内部目录 | 公司规范、合规流程 | 需要版本、审核与撤销机制 |
+
+对刚开始的团队，优先做**项目级、只读、低权限**的 Skill。把“能删除、能发消息、能部署”的动作留在明确审批之后；不要因为 Skill 是 Markdown，就忽略它可能引导 Agent 读取文件、运行命令或调用外部服务。
+
+## 一个触发描述，决定它会不会被正确使用
+
+坏描述：`帮助处理网站。`
+
+好描述：`在请求发布静态站点到 GitHub Pages 前，检查构建、仓库子路径、站内链接和无障碍证据；不执行部署、不修改文件。`
+
+前者太宽，会在不相关任务中出现；后者说清了**时机、目标、边界**。这正是 Skill 最重要的接口。
+
+<Checklist
+  id="tools-agent-skills"
+  items={[
+    "我只把反复出现且包含判断与验证的流程做成 Skill",
+    "我知道项目级 Skill 应放在 .opencode/skills/<名称>/SKILL.md",
+    "我会先用只读、低风险任务验证一个新 Skill",
+    "我不会把 API Key、客户数据或高权限默认授权写进 Skill"
+  ]}
+/>

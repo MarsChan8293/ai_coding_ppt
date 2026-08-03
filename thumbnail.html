@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1440, initial-scale=1">
+  <title>页面预览</title>
+  <link rel="stylesheet" href="assets/html-ppt/base.css">
+  <link rel="stylesheet" href="assets/html-ppt/animations.css">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="slides/c-tools-layout.css">
+  <style>
+    html,body{width:1440px;height:810px;min-height:0;overflow:hidden;background:#f5f5f5}
+    #thumbnailStage{width:1440px;height:810px;overflow:hidden}
+    #thumbnailStage .presentation-slide{width:1440px;height:810px;aspect-ratio:16/9;box-shadow:none;animation:none}
+  </style>
+</head>
+<body>
+  <main id="thumbnailStage" aria-label="内容页缩略图"></main>
+  <script>
+    function slideChrome(chapter) {
+      return `<span class="slide-chapter">${chapter}</span><img class="slide-logo" src="assets/media/xfusion-logo.svg" alt="超聚变"><span class="slide-index"></span>`;
+    }
+  </script>
+  <script src="slides/b-history.js"></script>
+  <script src="slides/c-tools.js"></script>
+  <script src="slides/e-methods.js"></script>
+  <script src="slides/f-practice.js"></script>
+  <script src="slides/g-solution.js"></script>
+  <script src="slides/h-proof.js"></script>
+  <script src="thumbnail.js"></script>
+</body>
+</html>
