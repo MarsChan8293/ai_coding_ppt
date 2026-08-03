@@ -1541,7 +1541,7 @@ to{opacity:1;transform:none}
 
 /* The player keeps a native 1440 × 810 canvas, then scales that canvas as one unit.
    This prevents dense method slides from reflowing differently in a short browser window. */
-.player .deck-stage{height:calc(100vh - 53px);padding:0;overflow:hidden}.player .presentation-slide{width:1440px;height:810px;max-width:none;aspect-ratio:auto;animation:none;transform:scale(var(--player-scale,1));transform-origin:50% 0}
+.player .deck-stage{height:calc(100vh - 53px);padding:0;overflow:hidden}.player .presentation-slide{width:1440px;height:810px;max-width:none;aspect-ratio:auto;animation:none;transform:scale(var(--player-scale,1));transform-origin:50% 50%}
 
 /* D2 / D3 / D6 reserve the larger native canvas for audience-facing text. */
 .methods-agent-failure-slide .method-failure-axis{font-size:11px;line-height:1.1}.methods-agent-failure-slide .method-agent-failure-grid p{font-size:13px;line-height:1.4}.methods-agent-failure-slide .method-agent-failure-grid em{font-size:11px}.methods-agent-failure-slide .method-agent-failure-response div p{font-size:12px;line-height:1.3}.methods-agent-failure-slide .method-agent-failure-response footer{font-size:12px}
