@@ -89,9 +89,9 @@ with sync_playwright() as p:
     page.on("pageerror", lambda error: errors.append(str(error)))
     page.on("request", lambda request: source_requests.append(request.url) if "/source/" in request.url else None)
     page.goto("http://127.0.0.1:4173", wait_until="networkidle")
-    page.wait_for_function("Number(document.querySelector('#libraryTotal').textContent) == 50")
+    page.wait_for_function("Number(document.querySelector('#libraryTotal').textContent) == 52")
 
-    assert page.locator(".slide-card").count() == 50
+    assert page.locator(".slide-card").count() == 52
     assert "6 SECTIONS" in page.locator(".section-heading .eyebrow").inner_text()
     assert page.locator(".section-tab .tab-index").all_inner_texts() == list("ABCDEFG")
     assert page.locator(".section-tab").all_inner_texts() == [
@@ -119,7 +119,7 @@ with sync_playwright() as p:
         "F.1 · 企业解决方案",
         "G.1 · 内部实践与客户案例",
     ]
-    assert page.locator(".slide-preview").count() == 50
+    assert page.locator(".slide-preview").count() == 52
     first_preview = page.locator(".slide-preview").first
     assert first_preview.get_attribute("src") == "thumbnail.html?slide=history-vibe-coding-timeline"
     assert page.locator(".thumb-art").count() == 0
@@ -140,7 +140,7 @@ with sync_playwright() as p:
         "tools": 6,
         "methods": 11,
         "practice": 7,
-        "solution": 20,
+        "solution": 22,
         "proof": 3,
     }
     standard_slide_ids = [
@@ -182,6 +182,8 @@ with sync_playwright() as p:
         ("team-add-solution", "team-add-solution"), ("team-quality-knowledge", "team-quality-knowledge"),
         ("team-project-proof", "team-project-proof"), ("unified-skills", "unified-skills"),
         ("deploy-selection", "deploy-selection"),
+        ("reference-desktop-deploy", "reference-desktop-deploy"),
+        ("reference-datacenter-deploy", "reference-datacenter-deploy"),
     ]
     for slide_id, source_page in solution_slide_ids:
         preview = page.frame_locator(f'[data-slide-id="{slide_id}"] .slide-preview')
@@ -324,14 +326,14 @@ with sync_playwright() as p:
     assert "gh-fix-ci" in skill_map_preview.locator(".skill-map-slide").inner_text()
 
     page.locator('[data-section="solution"]').click()
-    assert_text(page, "#visibleSelectionStatus", "已加入 1 / 20 张")
+    assert_text(page, "#visibleSelectionStatus", "已加入 1 / 22 张")
     solution_preview = page.frame_locator('[data-slide-id="solution-overview"] .slide-preview').locator(".source-slide-frame")
-    assert solution_preview.get_attribute("src") == "slides/g-solution-material.html?embed=solution-overview&mode=thumbnail"
+    assert solution_preview.get_attribute("src") == "slides/a-material-source/AI-Coding解决方案客户交流材料.html?embed=solution-overview&mode=thumbnail"
     solution_preview_chrome = page.frame_locator('[data-slide-id="solution-overview"] .slide-preview').locator(".source-frame-slide")
     assert solution_preview_chrome.locator(".slide-chapter").inner_text() == "F.7 · 企业解决方案"
     assert solution_preview_chrome.locator(".slide-logo").is_visible()
     page.locator("#addVisibleSlides").click()
-    assert_text(page, "#selectionCount", "25 张内容页")
+    assert_text(page, "#selectionCount", "27 张内容页")
     assert page.locator("#addVisibleSlides").is_disabled()
     page.locator("#clearSelectedSlides").click()
     assert_text(page, "#selectionCount", "0 张内容页")
@@ -339,13 +341,13 @@ with sync_playwright() as p:
 
     page.locator('[data-section="all"]').click()
     page.locator("#addVisibleSlides").click()
-    assert_text(page, "#selectionCount", "50 张内容页")
+    assert_text(page, "#selectionCount", "52 张内容页")
     assert page.locator(".selection-item .selection-section").all_inner_texts() == (
         [f"B.{index} · 历史与趋势" for index in range(1, 4)]
         + [f"C.{index} · 模型与工具" for index in range(1, 7)]
         + [f"D.{index} · 工程方法" for index in range(1, 12)]
         + [f"E.{index} · 入门实践" for index in range(1, 8)]
-        + [f"F.{index} · 企业解决方案" for index in range(1, 21)]
+        + [f"F.{index} · 企业解决方案" for index in range(1, 23)]
         + [f"G.{index} · 内部实践与客户案例" for index in range(1, 4)]
     )
     page.locator("#clearSelectedSlides").click()
@@ -469,7 +471,7 @@ with sync_playwright() as p:
         page.keyboard.press("ArrowRight")
     solution_frame = page.frame_locator("#deckStage .source-slide-frame")
     solution_frame.locator("#model-day0").wait_for(state="visible")
-    assert "Day 0 支持最新 Coding 模型当天可用" in page.locator(
+    assert "模型能力决定 AI Coding 上限，Day 0 让最新模型当天进入企业生产" in page.locator(
         "#deckStage .source-frame-slide > .slide-title"
     ).inner_text()
     page.wait_for_timeout(450)
@@ -560,7 +562,7 @@ with sync_playwright() as p:
     page.locator("#newComposition").click()
     page.locator('[data-section="proof"]').click()
     roi_card = page.locator(".slide-card").filter(has_text="AI Coding ROI 应从效能与成本、商业价值两个层面评估")
-    practice_card = page.locator(".slide-card").filter(has_text="两年实践，AI Coding 已成为研发基础设施")
+    practice_card = page.locator(".slide-card").filter(has_text="超聚变两年实践验证：AI Coding 已从个人工具走向 研发基础设施")
     assert roi_card.count() == 1
     assert practice_card.count() == 1
     roi_card.locator(".add-slide").click()
@@ -573,9 +575,10 @@ with sync_playwright() as p:
     page.wait_for_timeout(450)
     page.screenshot(path="/tmp/customer-material-roi.png", full_page=False)
     page.keyboard.press("ArrowRight")
-    assert page.locator(".practice-infrastructure-slide").count() == 1
-    assert "150+" in page.locator(".practice-infrastructure-slide").inner_text()
-    assert page.locator(".practice-dashboard-image img").evaluate("el => el.naturalWidth") > 0
+    practice_frame = page.frame_locator("#deckStage .source-slide-frame")
+    practice_frame.locator("#practice").wait_for(state="visible")
+    assert "897%" in practice_frame.locator("#practice").inner_text()
+    assert practice_frame.locator("#practice .ai4rd-software").count() == 1
     page.wait_for_timeout(450)
     page.screenshot(path="/tmp/customer-material-practice.png", full_page=False)
     page.keyboard.press("Escape")
@@ -604,7 +607,9 @@ with sync_playwright() as p:
     page.keyboard.press("ArrowRight")
     solution_frame = page.frame_locator("#deckStage .source-slide-frame")
     solution_frame.locator("#model-day0").wait_for(state="visible")
-    assert solution_frame.locator("#model-day0 img").get_attribute("src").startswith("pic/day0")
+    assert solution_frame.locator("#model-day0 img").evaluate_all(
+        "els => els.some(el => el.getAttribute('src').startsWith('assets/model-ever-reference-feedback'))"
+    )
     page.keyboard.press("ArrowRight")
     solution_frame = page.frame_locator("#deckStage .source-slide-frame")
     solution_frame.locator("#smart-accel").wait_for(state="visible")
@@ -670,8 +675,8 @@ with sync_playwright() as p:
     local_page.on("pageerror", lambda error: local_errors.append(str(error)))
     local_page.on("request", lambda request: local_source_requests.append(request.url) if "/source/" in request.url else None)
     local_page.goto(Path("index.html").resolve().as_uri(), wait_until="load")
-    local_page.wait_for_function("Number(document.querySelector('#libraryTotal').textContent) == 50")
-    assert local_page.locator(".slide-card").count() == 50
+    local_page.wait_for_function("Number(document.querySelector('#libraryTotal').textContent) == 52")
+    assert local_page.locator(".slide-card").count() == 52
     local_preview = local_page.locator(".slide-preview").first
     assert local_preview.get_attribute("src") == "thumbnail.html?slide=history-vibe-coding-timeline"
     local_page.frame_locator(".slide-preview").first.locator(".vibe-history-slide").wait_for()
