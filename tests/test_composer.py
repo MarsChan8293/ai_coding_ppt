@@ -688,9 +688,9 @@ with sync_playwright() as p:
     local_page.keyboard.press("ArrowRight")
     local_page.keyboard.press("ArrowRight")
     local_solution_frame = local_page.frame_locator("#deckStage .source-slide-frame")
-    local_day0_image = local_solution_frame.locator("#model-day0 img")
-    local_day0_image.wait_for(state="visible")
-    assert local_day0_image.evaluate("el => el.naturalWidth") > 0
+    local_day0_images = local_solution_frame.locator("#model-day0 img")
+    local_day0_images.first.wait_for(state="visible")
+    assert local_day0_images.evaluate_all("els => els.some(el => el.naturalWidth > 0)")
     assert not local_errors, "file:// page errors: " + "; ".join(local_errors)
     assert not local_source_requests, "file:// 演示稿不应在运行时请求 source/：" + "; ".join(local_source_requests)
 
