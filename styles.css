@@ -495,6 +495,44 @@ to{opacity:1;transform:none}
 .observability-dashboard-note{position:absolute;z-index:2;right:5%;bottom:5%;left:5%;margin:0;padding:7px 11px;border-left:3px solid #1768f2;background:#eaf4ff;color:#587390;font-size:12px;line-height:1.4}
 .observability-dashboard-note b{margin-right:9px;color:#1768f2}
 
+/* F / Evidence walls: ATM, inference observability, TokenOps and SkillHub use
+   a shared evidence-card system while keeping their information structures distinct. */
+.solution-proof-wall-slide{--solution-blue:#1768f2;--solution-cyan:#25d7f2;background:linear-gradient(145deg,#f7faff 0%,#fff 52%,#edf6ff 100%);color:#12203b}
+.solution-proof-wall-slide::before{background:linear-gradient(90deg,var(--solution-cyan),var(--solution-blue))}
+.solution-proof-wall-slide::after{content:"";position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(23,104,242,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(23,104,242,.035) 1px,transparent 1px);background-size:46px 46px;mask-image:linear-gradient(90deg,#000,transparent 82%)}
+.solution-proof-wall-slide .slide-chapter,.solution-proof-wall-slide .slide-title,.solution-proof-wall-slide .solution-proof-lead{z-index:1}
+.solution-proof-wall-slide .slide-chapter{color:var(--solution-blue)}
+.solution-proof-wall-slide .slide-logo{right:4%;top:4.2%;width:11.5%;z-index:1}
+.solution-proof-wall-slide .slide-title{top:13%;font-size:clamp(24px,3.1vw,54px);line-height:1.1;letter-spacing:-.07em}
+.solution-proof-wall-slide .slide-title span{color:var(--solution-blue)}
+.solution-proof-lead{position:absolute;z-index:1;top:25.5%;right:5%;left:5%;margin:0;color:#52667d;font-size:14px;line-height:1.45}
+.solution-proof-card{display:flex;min-width:0;min-height:0;flex-direction:column;margin:0;overflow:hidden;border:1px solid #d6e3f1;border-radius:12px;background:#fff;box-shadow:0 12px 28px rgba(8,31,68,.09)}
+.solution-proof-card figcaption{display:flex;min-height:42px;align-items:center;justify-content:space-between;gap:12px;padding:0 12px;border-bottom:1px solid #dce7f3;background:linear-gradient(90deg,#f5f9fe,#fff)}
+.solution-proof-card figcaption span{color:#1768f2;font:800 11px/1.1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.055em;white-space:nowrap}
+.solution-proof-card figcaption strong{color:#193b63;font-size:12px;line-height:1.25;white-space:nowrap}
+.solution-proof-image{display:grid;min-height:0;flex:1;place-items:center;padding:5px;background:#11161d}
+.solution-proof-image img{display:block;width:100%;height:100%;object-fit:contain;object-position:center}
+.solution-atm-grid{position:absolute;z-index:1;top:32%;right:5%;bottom:12.5%;left:5%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.solution-atm-grid .solution-proof-card:nth-child(2) .solution-proof-image,.solution-proof-image.token-personal-image{background:#f6f9fd}
+.solution-observability-grid{position:absolute;z-index:1;top:32%;right:5%;bottom:12.5%;left:5%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:10px}
+.solution-token-pair{position:absolute;z-index:1;top:32%;right:5%;bottom:12.5%;left:5%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.solution-skill-hub-layout{position:absolute;z-index:1;top:32%;right:5%;bottom:12.5%;left:5%;display:grid;grid-template-columns:.72fr 1.28fr;gap:12px}
+.solution-skill-hub-rail{display:flex;min-width:0;flex-direction:column;padding:18px;border-radius:12px;background:linear-gradient(155deg,#0b2347,#1768f2);color:#fff;box-shadow:0 13px 28px rgba(8,31,68,.14)}
+.solution-skill-hub-rail>span{color:#9cecf5;font:800 11px/1.1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.08em}
+.solution-skill-hub-rail h3{margin:10px 0 18px;color:#fff;font-size:25px;line-height:1.12}
+.solution-skill-hub-rail>div{display:grid;grid-template-columns:36px 1fr;gap:4px 9px;padding:12px 0;border-top:1px solid rgba(255,255,255,.18)}
+.solution-skill-hub-rail>div b{color:#9cecf5;font:800 12px/1.1 ui-monospace,SFMono-Regular,Menlo,monospace}
+.solution-skill-hub-rail>div strong{color:#fff;font-size:15px}
+.solution-skill-hub-rail>div p{grid-column:2;margin:0;color:rgba(255,255,255,.74);font-size:12px;line-height:1.4}
+.solution-skill-hub-figure{display:flex;min-width:0;flex-direction:column;margin:0;overflow:hidden;border:1px solid #d6e3f1;border-radius:12px;background:#fff;box-shadow:0 12px 28px rgba(8,31,68,.09)}
+.solution-skill-hub-figure figcaption{display:flex;min-height:42px;align-items:center;justify-content:space-between;gap:12px;padding:0 12px;border-bottom:1px solid #dce7f3;background:linear-gradient(90deg,#f5f9fe,#fff)}
+.solution-skill-hub-figure figcaption span{color:#1768f2;font:800 11px/1.1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.055em;white-space:nowrap}
+.solution-skill-hub-figure figcaption strong{color:#193b63;font-size:12px;line-height:1.25;white-space:nowrap}
+.solution-skill-hub-figure>div{display:grid;min-height:0;flex:1;place-items:center;padding:6px;background:#f7f9fc}
+.solution-skill-hub-figure img{display:block;width:100%;height:100%;object-fit:contain}
+.solution-proof-note{position:absolute;z-index:2;right:5%;bottom:5%;left:5%;margin:0;padding:7px 11px;border-left:3px solid #1768f2;background:#eaf4ff;color:#587390;font-size:12px;line-height:1.4}
+.solution-proof-note b{margin-right:9px;color:#1768f2}
+
 /* E / Harness Engineering: keep the source material's varied information structures inside the shared blue engineering visual system. */
 .methods-base{--harness-blue:#2563eb;--harness-cyan:#22c7e8;--harness-navy:#132d59;background:#f4f7fc;color:#132544}
 .methods-base::before{background:linear-gradient(90deg,var(--harness-cyan),var(--harness-blue))}
