@@ -10,11 +10,11 @@
       title,
       summary,
       theme: { paper: "#f5f8fc", ink: "#12203b", accent: "#0787a0" },
-      render: () => `
+      render: (options = {}) => `
         <section class="presentation-slide source-frame-slide" data-source-page="${sourcePage}">
           ${slideChrome(`F.${displayIndex} · 企业解决方案`)}
           <h2 class="slide-title">${title}</h2>
-          <iframe class="source-slide-frame" src="${sourceFile}?embed=${encodeURIComponent(sourcePage)}" title="${title}" tabindex="-1" aria-label="${title}"></iframe>
+          <iframe class="source-slide-frame" src="${sourceFile}?embed=${encodeURIComponent(sourcePage)}&mode=${options.thumbnail ? "thumbnail" : "player"}" title="${title}" tabindex="-1" aria-label="${title}"></iframe>
         </section>`
     };
   };

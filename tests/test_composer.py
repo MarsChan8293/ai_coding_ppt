@@ -195,6 +195,10 @@ with sync_playwright() as p:
         solution_frame = preview.frame_locator(".source-slide-frame")
         source_title = solution_frame.locator(f"#{source_page} .canvas > h2")
         source_title.wait_for(state="attached")
+        assert solution_frame.locator(".slide").count() == 1, f"嵌入文档仍包含多个页面：{slide_id}"
+        assert solution_frame.locator(".slide").evaluate(
+            "el => el.id"
+        ) == source_page, f"嵌入文档页面不是查询目标：{slide_id}"
         source_canvas = solution_frame.locator(f"#{source_page} .canvas")
         assert source_canvas.evaluate("el => getComputedStyle(el).transform") != "none", (
             f"嵌入页内容未随标题上移：{slide_id}"
@@ -218,6 +222,15 @@ with sync_playwright() as p:
         assert phrase in f4_text, f"F.4 主题内容缺失：{phrase}"
     assert f4_frame.locator("#performance-challenges img").count() == 0
     assert f4_frame.locator(".original-evidence-shot").count() == 0
+    unified_thumbnail_frame = page.frame_locator('[data-slide-id="unified-skills"] .slide-preview').frame_locator(
+        ".source-slide-frame"
+    )
+    unified_thumbnail_frame.locator("#unified-skills").wait_for(state="visible")
+    thumbnail_video_sources = unified_thumbnail_frame.locator("#unified-skills video").evaluate_all(
+        "videos => videos.map(video => ({src: video.getAttribute('src'), currentSrc: video.currentSrc}))"
+    )
+    assert len(thumbnail_video_sources) == 5
+    assert all(source["src"] is None and source["currentSrc"] == "" for source in thumbnail_video_sources)
     assert_uniform_header_rail(title_metrics, "标题")
     assert_title_raised_after_kicker_removal(title_metrics)
     assert_uniform_header_rail(chapter_metrics, "章节行")
@@ -313,7 +326,7 @@ with sync_playwright() as p:
     page.locator('[data-section="solution"]').click()
     assert_text(page, "#visibleSelectionStatus", "已加入 1 / 20 张")
     solution_preview = page.frame_locator('[data-slide-id="solution-overview"] .slide-preview').locator(".source-slide-frame")
-    assert solution_preview.get_attribute("src").startswith("slides/g-solution-material.html?embed=solution-overview")
+    assert solution_preview.get_attribute("src") == "slides/g-solution-material.html?embed=solution-overview&mode=thumbnail"
     solution_preview_chrome = page.frame_locator('[data-slide-id="solution-overview"] .slide-preview').locator(".source-frame-slide")
     assert solution_preview_chrome.locator(".slide-chapter").inner_text() == "F.7 · 企业解决方案"
     assert solution_preview_chrome.locator(".slide-logo").is_visible()
@@ -481,6 +494,28 @@ with sync_playwright() as p:
     assert "稳定并发 +67%" in page.locator(".case-study-slide").inner_text()
     page.wait_for_timeout(450)
     page.screenshot(path="/tmp/enterprise-case.png", full_page=False)
+    page.keyboard.press("Escape")
+
+    page.locator("#newComposition").click()
+    page.locator('[data-section="solution"]').click()
+    page.locator('[data-slide-id="unified-skills"] .add-slide').click()
+    page.locator("#playComposition").click()
+    page.keyboard.press("ArrowRight")
+    page.keyboard.press("ArrowRight")
+    unified_player_frame = page.frame_locator("#deckStage .source-slide-frame")
+    unified_player_frame.locator("#unified-skills").wait_for(state="visible")
+    assert unified_player_frame.locator("#unified-skills video").count() == 5
+    player_video_sources = unified_player_frame.locator("#unified-skills video").evaluate_all(
+        "videos => videos.map(video => ({src: video.getAttribute('src'), currentSrc: video.currentSrc}))"
+    )
+    assert [source["src"] for source in player_video_sources] == [
+        "video/01-产品基础需求.mp4",
+        "video/02-产品需求分解.mp4",
+        "video/03-功能模块详细设计.mp4",
+        "video/04-启动代码开发.mp4",
+        "video/05-代码检视.mp4",
+    ]
+    assert all(source["currentSrc"] for source in player_video_sources)
     page.keyboard.press("Escape")
 
     page.locator("#newComposition").click()
