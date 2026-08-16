@@ -83,3 +83,16 @@ window.sectionSlides = [
       </section>`
   }
 ];
+
+// G.3 已在对应关系表中标记为替换；保留稳定的页面 ID，播放器与缩略图统一加载 A 材料原页。
+const aMaterialPracticeSourceFile = "slides/a-material-source/AI-Coding解决方案客户交流材料.html";
+const practiceInfrastructureSlide = window.sectionSlides.find(slide => slide.id === "proof-practice-infrastructure");
+if (practiceInfrastructureSlide) {
+  practiceInfrastructureSlide.title = "超聚变两年实践验证：AI Coding 已从个人工具走向 研发基础设施";
+  practiceInfrastructureSlide.render = (options = {}) => `
+    <section class="presentation-slide source-frame-slide" data-source-page="practice">
+      ${slideChrome("G.3 · 内部实践与客户案例")}
+      <h2 class="slide-title">${practiceInfrastructureSlide.title}</h2>
+      <iframe class="source-slide-frame" src="${aMaterialPracticeSourceFile}?embed=practice&mode=${options.thumbnail ? "thumbnail" : "player"}" title="${practiceInfrastructureSlide.title}" tabindex="-1" aria-label="${practiceInfrastructureSlide.title}"></iframe>
+    </section>`;
+}
