@@ -49,5 +49,37 @@ window.sectionSlides = [
         <p class="practice-page-lead">覆盖 100% 的超聚变软件研发人员，人均 E2E 代码产出量提升 30%+</p>
         <div class="practice-infrastructure-layout"><div class="practice-left"><div class="practice-metrics"><div class="practice-metric"><strong>100%</strong><span>软件工程师使用覆盖率</span><small>FULL COVERAGE</small></div><div class="practice-metric"><strong>52.4%</strong><span>AI 代码生成率</span><small>CODE GENERATION</small></div><div class="practice-metric"><strong>150+</strong><span>Skills 落地</span><small>REUSABLE SKILLS</small></div><div class="practice-metric"><strong>65%</strong><span>AI 检视意见采纳率</span><small>REVIEW ACCEPTANCE</small></div><div class="practice-metric"><strong>10%+</strong><span>版本交付质量提升</span><small>DELIVERY QUALITY</small></div><div class="practice-metric"><strong>30%+</strong><span>人均代码产出量提升</span><small>E2E OUTPUT</small></div></div><div class="practice-dashboard"><div class="practice-panel-head"><strong>研发效能看板</strong><span>USAGE · OUTPUT · QUALITY</span></div><div class="practice-dashboard-image"><img src="assets/media/practice-efficiency-dashboard.jpg" alt="超聚变 AI Coding 研发效能看板"></div></div></div><aside class="practice-architecture"><div class="practice-panel-head"><strong>基于 FusionOne AI 构建 AI Coding 方案</strong><span>BUSINESS · AGENT · MAAS · XPU · COMPUTE</span></div><div class="practice-native-arch" aria-label="FusionOne AI Coding 方案架构"><section class="practice-arch-layer"><div class="practice-layer-rail"><b>业务领域</b><span>场景适配</span></div><div class="practice-domain-grid"><div><strong>BMC &amp; BIOS</strong><span>硬件强依赖 · 高稳定</span><em>C / 汇编</em></div><div><strong>OS 业务</strong><span>高性能 · 底层控制</span><em>C / C++ / Rust</em></div><div><strong>云智解决方案</strong><span>分布式 · 快速迭代</span><em>Go / Java / Python</em></div></div></section><section class="practice-arch-layer"><div class="practice-layer-rail"><b>研发 Agent</b><span>全场景覆盖</span></div><div class="practice-agent-content"><div class="practice-agent-grid"><div><strong>设计助手</strong><span>设计文档 · 接口文档 · 时序图</span></div><div><strong>开发助手</strong><span>代码生成 · 注释 · 优化</span></div><div><strong>测试助手</strong><span>测试脚本 · 单元测试</span></div><div><strong>运维助手</strong><span>问题单分析</span></div></div><div class="practice-agent-foundation"><div><b>基础组件</b><span>效能看板 · 部门 RAG 知识库</span></div><div class="practice-coding-agent"><b>Coding Agent</b><span>VS Code · Claude Code · OpenCode · Agent 扩展</span></div></div></div></section><section class="practice-arch-layer practice-platform-layer"><div class="practice-layer-rail"><b>FusionOne AI</b><span>MaaS 底座</span></div><div class="practice-platform-stack"><div class="practice-platform-row"><b>MaaS 能力</b><div><span>推理引擎与加速</span><span>模型服务</span><span>模型管理</span><span>运维监控</span></div></div><div class="practice-platform-row practice-model-row"><b>多模型 · 15+</b><p>GLM-4.7-FP8 · <strong>GLM-5.2</strong> · <strong>DeepSeek-V4-FLASH</strong> · Qwen3.6-27B · Embedding · bge-m3</p></div><div class="practice-platform-row"><b>XPU Engine</b><div><span>发现</span><span>资源分配</span><span>切分复用</span><span>智能调度</span><span>E2E 可视</span></div></div><div class="practice-platform-row practice-compute-row"><b>多样算力</b><div><span><b>G8600 V7</b></span><span class="practice-kunlun"><b>KunLun G8680 V3</b></span><span><b>G5500 V7</b></span></div></div></div></section></div></aside></div>
       </section>`
+  },
+  {
+    id: "proof-observability-dashboards",
+    section: "proof",
+    title: "研发实践看板：AI Coding 使用、质量与场景覆盖可观测",
+    summary: "从工具使用、代码检视、多语言研发到硬件 Skill，真实数据呈现 AI Coding 的规模化实践。",
+    theme: {"paper":"#f5f8fc","ink":"#12203b","accent":"#1768f2"},
+    render: () => `
+      <section class="presentation-slide proof-observability-slide">
+        ${slideChrome("G.4 · 内部实践与客户案例")}
+        <h2 class="slide-title">研发实践看板：AI Coding <span>使用、质量与场景覆盖可观测</span></h2>
+        <p class="practice-page-lead">从使用率、代码检视、多语言基线到硬件 Skill，AI Coding 的规模化落地正在变成可持续运营的数据资产。</p>
+        <div class="observability-dashboard-grid">
+          <figure class="observability-dashboard-card">
+            <figcaption><span>01 · ADOPTION &amp; OUTPUT</span><strong>AI 工具使用率与研发产出</strong></figcaption>
+            <div class="observability-image-frame"><img src="assets/media/practice-ai-tool-usage.png" alt="AI 工具使用率、使用次数与研发产出统计"></div>
+          </figure>
+          <figure class="observability-dashboard-card">
+            <figcaption><span>02 · QUALITY GATE</span><strong>代码检视覆盖与意见质量</strong></figcaption>
+            <div class="observability-image-frame"><img src="assets/media/practice-code-review.png" alt="AI 代码检视覆盖与意见质量统计"></div>
+          </figure>
+          <figure class="observability-dashboard-card">
+            <figcaption><span>03 · LANGUAGE BASELINE</span><strong>多语言代码基线与 MR 规模</strong></figcaption>
+            <div class="observability-image-frame"><img src="assets/media/practice-language-baseline.png" alt="不同编程语言的代码基线与合并请求统计"></div>
+          </figure>
+          <figure class="observability-dashboard-card">
+            <figcaption><span>04 · HARDWARE SKILLS</span><strong>硬件 Skill 使用与测试反馈</strong></figcaption>
+            <div class="observability-image-frame"><img src="assets/media/practice-hardware-skill.png" alt="硬件 Skill 使用与测试反馈统计"></div>
+          </figure>
+        </div>
+        <p class="observability-dashboard-note"><b>实践信号</b><span>使用率回答“有没有用”，质量与基线回答“用得怎样”，Skill 测试回答“能否进入具体研发场景”。</span></p>
+      </section>`
   }
 ];

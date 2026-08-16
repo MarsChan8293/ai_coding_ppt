@@ -89,9 +89,9 @@ with sync_playwright() as p:
     page.on("pageerror", lambda error: errors.append(str(error)))
     page.on("request", lambda request: source_requests.append(request.url) if "/source/" in request.url else None)
     page.goto("http://127.0.0.1:4173", wait_until="networkidle")
-    page.wait_for_function("Number(document.querySelector('#libraryTotal').textContent) == 52")
+    page.wait_for_function("Number(document.querySelector('#libraryTotal').textContent) == 53")
 
-    assert page.locator(".slide-card").count() == 52
+    assert page.locator(".slide-card").count() == 53
     assert "6 SECTIONS" in page.locator(".section-heading .eyebrow").inner_text()
     assert page.locator(".section-tab .tab-index").all_inner_texts() == list("ABCDEFG")
     assert page.locator(".section-tab").all_inner_texts() == [
@@ -119,7 +119,7 @@ with sync_playwright() as p:
         "F.1 · 企业解决方案",
         "G.1 · 内部实践与客户案例",
     ]
-    assert page.locator(".slide-preview").count() == 52
+    assert page.locator(".slide-preview").count() == 53
     first_preview = page.locator(".slide-preview").first
     assert first_preview.get_attribute("src") == "thumbnail.html?slide=history-vibe-coding-timeline"
     assert page.locator(".thumb-art").count() == 0
@@ -135,13 +135,23 @@ with sync_playwright() as p:
     assert market_preview.locator(".market-company-grid article").count() == 2
     assert "49.7%" in market_preview.locator(".market-reference-domain").inner_text()
     assert "$2.5B+" in market_preview.locator(".market-reference-arr").inner_text()
+    observability_card = page.locator('[data-slide-id="proof-observability-dashboards"]')
+    observability_card.scroll_into_view_if_needed()
+    observability_preview = observability_card.frame_locator(".slide-preview")
+    observability_preview.locator(".proof-observability-slide").wait_for()
+    assert observability_preview.locator(".observability-dashboard-card").count() == 4
+    assert observability_preview.locator(".observability-dashboard-card img").count() == 4
+    assert observability_preview.locator('img[src="assets/media/practice-ai-tool-usage.png"]').count() == 1
+    assert observability_preview.locator('img[src="assets/media/practice-code-review.png"]').count() == 1
+    assert observability_preview.locator('img[src="assets/media/practice-language-baseline.png"]').count() == 1
+    assert observability_preview.locator('img[src="assets/media/practice-hardware-skill.png"]').count() == 1
     expected_section_counts = {
         "history": 3,
         "tools": 6,
         "methods": 11,
         "practice": 7,
         "solution": 22,
-        "proof": 3,
+        "proof": 4,
     }
     standard_slide_ids = [
         "history-market-evidence", "history-agentic-maturity", "history-vibe-coding-timeline",
@@ -151,7 +161,7 @@ with sync_playwright() as p:
         "methods-harness-guardrails", "methods-industry-consensus", "methods-framework-boundary",
         "practice-first-session", "practice-run-scaffold", "practice-agent-rules",
         "practice-install-grill-me", "practice-shape-task", "practice-terminal-change", "practice-proof",
-        "proof-roi", "proof-guangdong-case", "proof-practice-infrastructure",
+        "proof-roi", "proof-guangdong-case", "proof-practice-infrastructure", "proof-observability-dashboards",
     ]
     title_metrics = {}
     chapter_metrics = {}
@@ -341,14 +351,14 @@ with sync_playwright() as p:
 
     page.locator('[data-section="all"]').click()
     page.locator("#addVisibleSlides").click()
-    assert_text(page, "#selectionCount", "52 张内容页")
+    assert_text(page, "#selectionCount", "53 张内容页")
     assert page.locator(".selection-item .selection-section").all_inner_texts() == (
         [f"B.{index} · 历史与趋势" for index in range(1, 4)]
         + [f"C.{index} · 模型与工具" for index in range(1, 7)]
         + [f"D.{index} · 工程方法" for index in range(1, 12)]
         + [f"E.{index} · 入门实践" for index in range(1, 8)]
         + [f"F.{index} · 企业解决方案" for index in range(1, 23)]
-        + [f"G.{index} · 内部实践与客户案例" for index in range(1, 4)]
+        + [f"G.{index} · 内部实践与客户案例" for index in range(1, 5)]
     )
     page.locator("#clearSelectedSlides").click()
     assert_text(page, "#selectionCount", "0 张内容页")
@@ -675,8 +685,8 @@ with sync_playwright() as p:
     local_page.on("pageerror", lambda error: local_errors.append(str(error)))
     local_page.on("request", lambda request: local_source_requests.append(request.url) if "/source/" in request.url else None)
     local_page.goto(Path("index.html").resolve().as_uri(), wait_until="load")
-    local_page.wait_for_function("Number(document.querySelector('#libraryTotal').textContent) == 52")
-    assert local_page.locator(".slide-card").count() == 52
+    local_page.wait_for_function("Number(document.querySelector('#libraryTotal').textContent) == 53")
+    assert local_page.locator(".slide-card").count() == 53
     local_preview = local_page.locator(".slide-preview").first
     assert local_preview.get_attribute("src") == "thumbnail.html?slide=history-vibe-coding-timeline"
     local_page.frame_locator(".slide-preview").first.locator(".vibe-history-slide").wait_for()
