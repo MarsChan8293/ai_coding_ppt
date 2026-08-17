@@ -9,6 +9,35 @@ const sections = [
   { id: "proof", label: "内部实践与客户案例", index: "G" }
 ];
 
+const DEFAULT_COMPOSITION = {
+  type: "xfusion-ai-coding-composition",
+  version: 1,
+  name: "AI Coding 提效",
+  slideIds: [
+    "history-vibe-coding-timeline",
+    "tools-private-model-benchmark",
+    "tools-personal-choice",
+    "skills-concept",
+    "solution-security-cost-challenges",
+    "solution-model-agent-evolution-challenges",
+    "solution-performance-challenges",
+    "solution-overview",
+    "private-security",
+    "model-day0",
+    "solution-atm-suite",
+    "smart-accel",
+    "solution-inference-observability",
+    "roi-tokenops",
+    "solution-skill-hub",
+    "deploy-selection",
+    "reference-desktop-deploy",
+    "reference-datacenter-deploy",
+    "proof-practice-infrastructure",
+    "proof-observability-dashboards",
+    "proof-guangdong-case"
+  ]
+};
+
 let slides = [...(window.sectionSlides || [])];
 
 const sectionById = new Map(sections.map(section => [section.id, section]));
@@ -18,10 +47,11 @@ const starterSlideIds = sections
   .map(section => slides.find(slide => !slide.legacy && slide.section === section.id)?.id)
   .filter(Boolean);
 let slideById = new Map(slides.map(slide => [slide.id, slide]));
+const defaultSlideIds = [...new Set(DEFAULT_COMPOSITION.slideIds.filter(id => slideById.has(id)))];
 
 const state = {
   activeSection: "all",
-  selected: starterSlideIds,
+  selected: defaultSlideIds.length ? defaultSlideIds : starterSlideIds,
   currentId: null,
   playerIndex: 0,
   deck: []
@@ -36,6 +66,8 @@ const compositionName = $("#compositionName");
 const saveDialog = $("#saveDialog");
 const saveCompositionName = $("#saveCompositionName");
 const player = $("#player");
+
+compositionName.value = DEFAULT_COMPOSITION.name;
 
 function escapeHtml(value) {
   return String(value).replace(/[&<>'"]/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" })[char]);

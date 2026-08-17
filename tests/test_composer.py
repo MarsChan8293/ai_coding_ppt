@@ -111,13 +111,29 @@ with sync_playwright() as p:
     assert page.locator('[data-slide-id="tools-personal-choice"] .card-kicker').inner_text() == "C.4 · 模型与工具"
     assert page.locator('[data-slide-id="skills-concept"] .card-kicker').inner_text() == "C.5 · 模型与工具"
     assert page.locator('[data-slide-id="skills-common-map"] .card-kicker').inner_text() == "C.6 · 模型与工具"
+    assert page.locator("#compositionName").input_value() == "AI Coding 提效"
     assert page.locator(".selection-item .selection-section").all_inner_texts() == [
         "B.1 · 历史与趋势",
-        "C.1 · 模型与工具",
-        "D.1 · 工程方法",
-        "E.1 · 入门实践",
-        "F.1 · 企业解决方案",
-        "G.1 · 内部实践与客户案例",
+        "C.2 · 模型与工具",
+        "C.4 · 模型与工具",
+        "C.5 · 模型与工具",
+        "F.2 · 企业解决方案",
+        "F.3 · 企业解决方案",
+        "F.4 · 企业解决方案",
+        "F.7 · 企业解决方案",
+        "F.8 · 企业解决方案",
+        "F.9 · 企业解决方案",
+        "F.12 · 企业解决方案",
+        "F.13 · 企业解决方案",
+        "F.14 · 企业解决方案",
+        "F.17 · 企业解决方案",
+        "F.22 · 企业解决方案",
+        "F.23 · 企业解决方案",
+        "F.24 · 企业解决方案",
+        "F.25 · 企业解决方案",
+        "G.3 · 内部实践与客户案例",
+        "G.4 · 内部实践与客户案例",
+        "G.2 · 内部实践与客户案例",
     ]
     assert page.locator(".slide-preview").count() == 56
     first_preview = page.locator(".slide-preview").first
@@ -135,7 +151,7 @@ with sync_playwright() as p:
     assert market_preview.locator(".market-company-grid article").count() == 2
     assert "49.7%" in market_preview.locator(".market-reference-domain").inner_text()
     assert "$2.5B+" in market_preview.locator(".market-reference-arr").inner_text()
-    observability_card = page.locator('[data-slide-id="proof-observability-dashboards"]')
+    observability_card = page.locator('.slide-card[data-slide-id="proof-observability-dashboards"]')
     observability_card.scroll_into_view_if_needed()
     observability_preview = observability_card.frame_locator(".slide-preview")
     observability_preview.locator(".proof-observability-slide").wait_for()
@@ -149,15 +165,15 @@ with sync_playwright() as p:
         "solution-atm-suite", "solution-inference-observability", "roi-tokenops", "solution-skill-hub",
     ]
     for slide_id in native_solution_ids:
-        page.locator(f'[data-slide-id="{slide_id}"]').scroll_into_view_if_needed()
-    atm_preview = page.frame_locator('[data-slide-id="solution-atm-suite"] .slide-preview')
+        page.locator(f'.slide-card[data-slide-id="{slide_id}"]').scroll_into_view_if_needed()
+    atm_preview = page.frame_locator('.slide-card[data-slide-id="solution-atm-suite"] .slide-preview')
     atm_preview.locator(".solution-atm-slide").wait_for()
     assert atm_preview.locator(".solution-proof-card").count() == 3
     assert atm_preview.locator(".solution-proof-card img").count() == 3
     assert atm_preview.locator('img[src="assets/media/solution-atm-portal.png"]').count() == 1
     assert atm_preview.locator('img[src="assets/media/solution-atm-software-center.png"]').count() == 1
     assert atm_preview.locator('img[src="assets/media/solution-atm-model-list.png"]').count() == 1
-    inference_preview = page.frame_locator('[data-slide-id="solution-inference-observability"] .slide-preview')
+    inference_preview = page.frame_locator('.slide-card[data-slide-id="solution-inference-observability"] .slide-preview')
     inference_preview.locator(".solution-inference-slide").wait_for()
     assert inference_preview.locator(".solution-proof-card").count() == 4
     assert inference_preview.locator(".solution-proof-card img").count() == 4
@@ -166,7 +182,7 @@ with sync_playwright() as p:
         "solution-vllm-glm52-overview.png", "solution-vllm-glm52-detail.png",
     ]:
         assert inference_preview.locator(f'img[src="assets/media/{asset_name}"]').count() == 1
-    token_preview = page.frame_locator('[data-slide-id="roi-tokenops"] .slide-preview')
+    token_preview = page.frame_locator('.slide-card[data-slide-id="roi-tokenops"] .slide-preview')
     token_preview.locator(".solution-token-slide").wait_for()
     assert token_preview.locator(".solution-token-pair .solution-proof-card").count() == 2
     assert token_preview.locator('img[src="assets/media/solution-token-dashboard.png"]').count() == 1
@@ -281,7 +297,7 @@ with sync_playwright() as p:
         page.locator(f'[data-section="{section}"]').click()
         assert page.locator(".slide-card").count() == expected_count
     page.locator('[data-section="practice"]').click()
-    assert_text(page, "#visibleSelectionStatus", "已加入 1 / 7 张")
+    assert_text(page, "#visibleSelectionStatus", "已加入 0 / 7 张")
     practice_previews = [
         ("practice-first-session", "practice-first-session-slide"),
         ("practice-run-scaffold", "practice-repository-slide"),
@@ -308,10 +324,10 @@ with sync_playwright() as p:
     assert "grill-me" in skill_text
     assert "--agent opencode --yes" in skill_text
     page.locator('[data-section="all"]').click()
-    assert_text(page, "#selectionCount", "6 张内容页")
+    assert_text(page, "#selectionCount", "21 张内容页")
 
     page.locator('[data-section="tools"]').click()
-    model_benchmark_card = page.locator('[data-slide-id="tools-private-model-benchmark"]')
+    model_benchmark_card = page.locator('.slide-card[data-slide-id="tools-private-model-benchmark"]')
     assert model_benchmark_card.count() == 1
     model_benchmark_preview = page.frame_locator('[data-slide-id="tools-private-model-benchmark"] .slide-preview')
     model_benchmark_preview.locator(".model-snapshot-slide").wait_for()
@@ -367,14 +383,14 @@ with sync_playwright() as p:
     assert "gh-fix-ci" in skill_map_preview.locator(".skill-map-slide").inner_text()
 
     page.locator('[data-section="solution"]').click()
-    assert_text(page, "#visibleSelectionStatus", "已加入 1 / 25 张")
+    assert_text(page, "#visibleSelectionStatus", "已加入 14 / 25 张")
     solution_preview = page.frame_locator('[data-slide-id="solution-overview"] .slide-preview').locator(".source-slide-frame")
     assert solution_preview.get_attribute("src") == "slides/a-material-source/AI-Coding解决方案客户交流材料.html?embed=solution-overview&mode=thumbnail"
     solution_preview_chrome = page.frame_locator('[data-slide-id="solution-overview"] .slide-preview').locator(".source-frame-slide")
     assert solution_preview_chrome.locator(".slide-chapter").inner_text() == "F.7 · 企业解决方案"
     assert solution_preview_chrome.locator(".slide-logo").is_visible()
     page.locator("#addVisibleSlides").click()
-    assert_text(page, "#selectionCount", "30 张内容页")
+    assert_text(page, "#selectionCount", "32 张内容页")
     assert page.locator("#addVisibleSlides").is_disabled()
     page.locator("#clearSelectedSlides").click()
     assert_text(page, "#selectionCount", "0 张内容页")
@@ -402,7 +418,7 @@ with sync_playwright() as p:
         "history-market-evidence",
         "tools-three-layers",
     ]:
-        page.locator(f'[data-slide-id="{slide_id}"] .add-slide').click()
+        page.locator(f'.slide-card[data-slide-id="{slide_id}"] .add-slide').click()
     assert_text(page, "#selectionCount", "7 张内容页")
     page.screenshot(path="/tmp/xfusion-composer.png", full_page=True)
 
@@ -499,8 +515,8 @@ with sync_playwright() as p:
     assert_text(page, "#selectionCount", "2 张内容页")
 
     page.locator('[data-section="solution"]').click()
-    lifecycle_card = page.locator('[data-slide-id="model-day0"]')
-    deployment_card = page.locator('[data-slide-id="deploy-selection"]')
+    lifecycle_card = page.locator('.slide-card[data-slide-id="model-day0"]')
+    deployment_card = page.locator('.slide-card[data-slide-id="deploy-selection"]')
     assert lifecycle_card.count() == 1
     assert deployment_card.count() == 1
     lifecycle_card.locator(".add-slide").click()
@@ -541,7 +557,7 @@ with sync_playwright() as p:
 
     page.locator("#newComposition").click()
     page.locator('[data-section="solution"]').click()
-    page.locator('[data-slide-id="unified-skills"] .add-slide').click()
+    page.locator('.slide-card[data-slide-id="unified-skills"] .add-slide').click()
     page.locator("#playComposition").click()
     page.keyboard.press("ArrowRight")
     page.keyboard.press("ArrowRight")
@@ -626,11 +642,11 @@ with sync_playwright() as p:
 
     page.locator("#newComposition").click()
     page.locator('[data-section="solution"]').click()
-    lifecycle_card = page.locator('[data-slide-id="model-day0"]')
-    performance_card = page.locator('[data-slide-id="smart-accel"]')
-    tokenops_card = page.locator('[data-slide-id="roi-tokenops"]')
-    delivery_card = page.locator('[data-slide-id="team-add-solution"]')
-    deployment_card = page.locator('[data-slide-id="deploy-selection"]')
+    lifecycle_card = page.locator('.slide-card[data-slide-id="model-day0"]')
+    performance_card = page.locator('.slide-card[data-slide-id="smart-accel"]')
+    tokenops_card = page.locator('.slide-card[data-slide-id="roi-tokenops"]')
+    delivery_card = page.locator('.slide-card[data-slide-id="team-add-solution"]')
+    deployment_card = page.locator('.slide-card[data-slide-id="deploy-selection"]')
     for card in [lifecycle_card, performance_card, tokenops_card, delivery_card, deployment_card]:
         assert card.count() == 1
     tokenops_card.locator(".add-slide").click()
@@ -722,7 +738,7 @@ with sync_playwright() as p:
     local_page.frame_locator(".slide-preview").first.locator(".vibe-history-slide").wait_for()
     local_page.locator("#newComposition").click()
     local_page.locator('[data-section="solution"]').click()
-    local_day0_card = local_page.locator('[data-slide-id="model-day0"]')
+    local_day0_card = local_page.locator('.slide-card[data-slide-id="model-day0"]')
     local_day0_card.locator(".add-slide").click()
     local_page.locator("#playComposition").click()
     local_page.keyboard.press("ArrowRight")
