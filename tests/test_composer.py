@@ -403,6 +403,16 @@ with sync_playwright() as p:
     assert skill_concept_preview.locator(".skill-tree p").count() == 4
     assert skill_concept_preview.locator(".skill-boundary-grid article").count() == 4
     assert "渐进加载" in skill_concept_preview.locator(".skill-concept-slide").inner_text()
+    load_card_metrics = skill_concept_preview.locator(".c5-load-steps article").evaluate_all(
+        "els => els.map(el => { const rect = el.getBoundingClientRect(); const band = el.querySelector('em').getBoundingClientRect(); return { top: Math.round(rect.top), height: Math.round(rect.height), bandTop: Math.round(band.top), bandBottom: Math.round(band.bottom), cardBottom: Math.round(rect.bottom) }; })"
+    )
+    assert len(load_card_metrics) == 3
+    assert len({metric["height"] for metric in load_card_metrics}) == 1
+    assert all(metric["bandTop"] >= metric["top"] and metric["bandBottom"] <= metric["cardBottom"] for metric in load_card_metrics)
+    load_title_offsets = skill_concept_preview.locator(".c5-load-steps article > strong").evaluate_all(
+        "els => els.map(el => Math.round(el.getBoundingClientRect().top - el.closest('article').getBoundingClientRect().top))"
+    )
+    assert len(set(load_title_offsets)) == 1
 
     skill_map_preview = page.frame_locator('[data-slide-id="skills-common-map"] .slide-preview')
     skill_map_preview.locator(".skill-map-slide").wait_for()
