@@ -378,6 +378,25 @@ with sync_playwright() as p:
     assert personal_tool_preview.locator(".tool-choice-grid article p").first.evaluate(
         "el => getComputedStyle(el).fontSize"
     ) == "12px"
+    for grid_selector, expected_count in [
+        (".c4-editor-grid", 3),
+        (".c4-terminal-grid", 4),
+    ]:
+        card_metrics = personal_tool_preview.locator(f"{grid_selector} article").evaluate_all(
+            "els => els.map(el => { const rect = el.getBoundingClientRect(); return { top: Math.round(rect.top), height: Math.round(rect.height) }; })"
+        )
+        assert len(card_metrics) == expected_count
+        assert len({metric["top"] for metric in card_metrics}) == 1
+        assert len({metric["height"] for metric in card_metrics}) == 1
+        assert card_metrics[0]["height"] > 150
+    terminal_text_tops = personal_tool_preview.locator(".c4-terminal-grid article > p").evaluate_all(
+        "els => els.map(el => Math.round(el.getBoundingClientRect().top))"
+    )
+    terminal_footer_tops = personal_tool_preview.locator(".c4-terminal-grid article > footer").evaluate_all(
+        "els => els.map(el => Math.round(el.getBoundingClientRect().top))"
+    )
+    assert len(set(terminal_text_tops)) == 1
+    assert len(set(terminal_footer_tops)) == 1
 
     skill_concept_preview = page.frame_locator('[data-slide-id="skills-concept"] .slide-preview')
     skill_concept_preview.locator(".skill-concept-slide").wait_for()

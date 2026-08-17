@@ -143,7 +143,7 @@
 .c-solution-slide.personal-tool-choice-slide .c4-tool-grid{display:grid;min-width:0;min-height:0;gap:7px}
 .c-solution-slide.personal-tool-choice-slide .c4-editor-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
 .c-solution-slide.personal-tool-choice-slide .c4-terminal-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
-.c-solution-slide.personal-tool-choice-slide .c4-tool-grid article{display:flex;min-width:0;min-height:0;flex-direction:column;gap:5px;padding:9px;border:1px solid #dce9f5;border-left:3px solid #5d9bea;border-radius:7px;background:#f9fbff!important;box-shadow:none!important}
+.c-solution-slide.personal-tool-choice-slide .c4-tool-grid article{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto 32px minmax(0,1fr) auto;min-width:0;min-height:0;gap:5px;padding:9px;border:1px solid #dce9f5;border-left:3px solid #5d9bea;border-radius:7px;background:#f9fbff!important;box-shadow:none!important}
 .c-solution-slide.personal-tool-choice-slide .c4-editor-grid article:nth-child(2){border-left-color:#4b89d7;background:#f5f9ff!important}
 .c-solution-slide.personal-tool-choice-slide .c4-editor-grid article:nth-child(3){border-left-color:#25c8dd;background:#f3fcfd!important}
 .c-solution-slide.personal-tool-choice-slide .c4-terminal-grid article{border-left-color:#25b9cf;background:#f3fcfd!important}

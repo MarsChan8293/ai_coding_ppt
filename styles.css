@@ -879,6 +879,7 @@ to{opacity:1;transform:none}
 .c-strategy-slide.personal-tool-choice-slide .tool-choice-grid article>span{display:flex;align-items:center;color:#4f5763;font-size:10px}
 .c-strategy-slide.personal-tool-choice-slide .tool-choice-grid article>p{display:flex;align-items:center;color:#252c36;font-size:12px;line-height:1.25}
 .c-strategy-slide.personal-tool-choice-slide .tool-choice-grid article>footer{display:flex;align-items:center;color:#5d6570;font-size:10px;line-height:1.25}
+.c-strategy-slide.personal-tool-choice-slide .c4-editor-grid,.c-strategy-slide.personal-tool-choice-slide .c4-terminal-grid{grid-template-rows:1fr}
 .c-strategy-slide.personal-tool-choice-slide .personal-tool-note{bottom:5.6%;padding:7px 0;border:0;border-top:1px solid #aeb5bf;border-radius:0;background:#fff;box-shadow:none;color:#4f5763;font-size:10px}
 .c-strategy-slide.personal-tool-choice-slide .personal-tool-note b{color:var(--c-blue)}
 .c-strategy-slide.personal-tool-choice-slide .personal-tool-note span{color:#747b85}
