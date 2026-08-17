@@ -315,6 +315,15 @@ with sync_playwright() as p:
         assert preview.locator(".practice-sim-terminal").count() == 1
         assert preview.locator(".practice-sim-guide").count() == 1
         assert "模拟回放" in preview.locator(".practice-sim-terminal").inner_text()
+        practice_motion = preview.locator(".practice-term-line").first.evaluate(
+            "el => { const style = getComputedStyle(el); return { animation: style.animationName, opacity: style.opacity, transform: style.transform, transition: style.transitionProperty }; }"
+        )
+        assert practice_motion == {
+            "animation": "none",
+            "opacity": "1",
+            "transform": "none",
+            "transition": "none",
+        }
     assert "AGENTS.md" in page.frame_locator('[data-slide-id="practice-agent-rules"] .slide-preview').locator(
         ".practice-agent-rules-slide"
     ).inner_text()
@@ -389,6 +398,17 @@ with sync_playwright() as p:
     solution_preview_chrome = page.frame_locator('[data-slide-id="solution-overview"] .slide-preview').locator(".source-frame-slide")
     assert solution_preview_chrome.locator(".slide-chapter").inner_text() == "F.7 · 企业解决方案"
     assert solution_preview_chrome.locator(".slide-logo").is_visible()
+    solution_motion = page.frame_locator('[data-slide-id="solution-overview"] .slide-preview').frame_locator(
+        ".source-slide-frame"
+    ).locator(".reveal").first.evaluate(
+        "el => { const style = getComputedStyle(el); return { animation: style.animationName, opacity: style.opacity, transform: style.transform, transition: style.transitionProperty }; }"
+    )
+    assert solution_motion == {
+        "animation": "none",
+        "opacity": "1",
+        "transform": "none",
+        "transition": "none",
+    }
     page.locator("#addVisibleSlides").click()
     assert_text(page, "#selectionCount", "32 张内容页")
     assert page.locator("#addVisibleSlides").is_disabled()
