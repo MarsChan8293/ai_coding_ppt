@@ -8,6 +8,7 @@ if (!thumbnailSlide) {
   thumbnailStage.innerHTML = '<section class="presentation-slide"><h1 class="slide-title">页面预览不可用</h1></section>';
 } else {
   thumbnailStage.innerHTML = thumbnailSlide.render(thumbnailRenderOptions);
+  window.alignSourceFrameTitles?.(thumbnailStage);
   const slideIndex = thumbnailStage.querySelector(".slide-index");
   if (slideIndex) slideIndex.textContent = "预览";
   document.title = `${thumbnailSlide.title} · 页面预览`;

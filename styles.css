@@ -130,6 +130,7 @@ button:focus-visible,input:focus-visible{outline:3px solid rgba(247,0,0,.3);outl
 .source-frame-slide .slide-chapter{color:var(--slide-accent-end)}
 .source-frame-slide .slide-kicker{color:var(--slide-accent-end)}
 .source-frame-slide .slide-title{color:#12203b}
+.source-frame-slide>.slide-title{left:var(--source-content-left,2.5%);right:var(--source-content-right,2.5%)}
 .source-frame-slide .slide-index{bottom:3%;color:#f5f8fc}
 .cover-slide,.toc-slide,.end-slide{--enterprise-blue:#1768f2;--enterprise-cyan:#25d7f2;--enterprise-navy:#0b2347}
 .cover-slide{background:radial-gradient(circle at 76% 25%,rgba(56,158,255,.27),transparent 27%),linear-gradient(132deg,#071a36 0%,#0b2c5d 53%,#1768f2 128%);color:#fff}

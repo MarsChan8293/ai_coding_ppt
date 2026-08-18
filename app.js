@@ -629,6 +629,7 @@ function renderPlayer() {
   stage.innerHTML = state.deck[state.playerIndex];
   scalePlayerCanvas();
   scaleSourceFrames(stage);
+  window.alignSourceFrameTitles?.(stage);
   const index = stage.querySelector(".slide-index");
   if (index) index.textContent = `${String(state.playerIndex + 1).padStart(2, "0")} / ${String(state.deck.length).padStart(2, "0")}`;
   $("#playerCounter").textContent = `${state.playerIndex + 1} / ${state.deck.length}`;

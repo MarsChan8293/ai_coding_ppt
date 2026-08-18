@@ -1,3 +1,23 @@
+/* Source pages share the composer chrome, but their inner canvas widths vary. Keep the outer title on the same content rail. */
+window.alignSourceFrameTitles = function alignSourceFrameTitles(root = document) {
+  root.querySelectorAll(".source-frame-slide").forEach(slide => {
+    const frame = slide.querySelector(".source-slide-frame");
+    if (!frame || frame.dataset.titleAlignmentBound === "true") return;
+    frame.dataset.titleAlignmentBound = "true";
+    const apply = () => {
+      const canvas = frame.contentDocument?.querySelector(".composer-embed-active .canvas, .canvas");
+      if (!canvas) return;
+      const rect = canvas.getBoundingClientRect();
+      if (!Number.isFinite(rect.left) || !Number.isFinite(rect.right)) return;
+      slide.style.setProperty("--source-content-left", `${rect.left}px`);
+      slide.style.setProperty("--source-content-right", `${1440 - rect.right}px`);
+    };
+    frame.addEventListener("load", apply);
+    apply();
+    requestAnimationFrame(apply);
+  });
+};
+
 /* F · 企业解决方案。页面 ID 与顺序须保持稳定。 */
 (function registerSourceSolutionSlides() {
   const sourceFile = "slides/g-solution-material.html";

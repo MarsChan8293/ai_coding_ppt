@@ -426,6 +426,9 @@ with sync_playwright() as p:
     assert solution_preview.get_attribute("src") == "slides/a-material-source/AI-Coding解决方案客户交流材料.html?embed=solution-overview&mode=thumbnail"
     solution_preview_chrome = page.frame_locator('[data-slide-id="solution-overview"] .slide-preview').locator(".source-frame-slide")
     assert solution_preview_chrome.locator(".slide-chapter").inner_text() == "F.7 · 企业解决方案"
+    assert solution_preview_chrome.locator(".slide-title").evaluate(
+        "el => ({ left: getComputedStyle(el).left, right: getComputedStyle(el).right })"
+    ) == {"left": "36px", "right": "36px"}
     assert solution_preview_chrome.locator(".slide-logo").is_visible()
     solution_motion = page.frame_locator('[data-slide-id="solution-overview"] .slide-preview').frame_locator(
         ".source-slide-frame"
@@ -580,6 +583,14 @@ with sync_playwright() as p:
     assert "模型能力决定 AI Coding 上限，Day 0 让最新模型当天进入企业生产" in page.locator(
         "#deckStage .source-frame-slide > .slide-title"
     ).inner_text()
+    page.wait_for_function(
+        """() => { const title = document.querySelector('#deckStage .source-frame-slide > .slide-title'); const canvas = document.querySelector('#deckStage .source-slide-frame')?.contentDocument?.querySelector('#model-day0 .canvas'); return canvas && Math.round(title.getBoundingClientRect().left) === Math.round(canvas.getBoundingClientRect().left); }"""
+    )
+    assert page.locator("#deckStage .source-frame-slide > .slide-title").evaluate(
+        "el => Math.round(el.getBoundingClientRect().left)"
+    ) == solution_frame.locator("#model-day0 .canvas").evaluate(
+        "el => Math.round(el.getBoundingClientRect().left)"
+    )
     page.wait_for_timeout(450)
     page.screenshot(path="/tmp/enterprise-day0.png", full_page=False)
     page.keyboard.press("ArrowRight")
@@ -588,6 +599,14 @@ with sync_playwright() as p:
     assert "按模型规模、并发和团队规模选择部署配置" in page.locator(
         "#deckStage .source-frame-slide > .slide-title"
     ).inner_text()
+    page.wait_for_function(
+        """() => { const title = document.querySelector('#deckStage .source-frame-slide > .slide-title'); const canvas = document.querySelector('#deckStage .source-slide-frame')?.contentDocument?.querySelector('#deploy-selection .canvas'); return canvas && Math.round(title.getBoundingClientRect().left) === Math.round(canvas.getBoundingClientRect().left); }"""
+    )
+    assert page.locator("#deckStage .source-frame-slide > .slide-title").evaluate(
+        "el => Math.round(el.getBoundingClientRect().left)"
+    ) == solution_frame.locator("#deploy-selection .canvas").evaluate(
+        "el => Math.round(el.getBoundingClientRect().left)"
+    )
     page.keyboard.press("Escape")
 
     page.locator('[data-section="proof"]').click()
